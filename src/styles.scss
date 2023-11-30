@@ -1,0 +1,29 @@
+:root {
+  --color-violet: #940dff;
+  --color-magenta: #e64bff;
+  --color-hot-pink: #ff4bb7;
+  --color-dark-blue: #121e48e6;
+  --color-medium-aquamarine: #63e1a5;
+  --color-background: #e5e5e5;
+}
+
+* {
+  min-height: 100vh;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+
+  body {
+    background-color: var(--color-background);
+    font-family: "Josefin Sans", sans-serif;
+    color: var(--color-dark-blue);
+    margin: 0;
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+  }
+}
