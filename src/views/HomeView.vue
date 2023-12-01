@@ -1,7 +1,21 @@
-<script setup>
-import { Icon } from "@iconify/vue"
+<script>
 import InputPanel from "../components/inputPanel/InputPanel.vue"
 import ResultPanel from "../components/resultPanel/ResultPanel.vue"
+
+export default {
+  components: { InputPanel, ResultPanel },
+  name: "HomeView",
+  data() {
+    return {
+      resultPanel: false,
+    }
+  },
+  methods: {
+    handleChangePanel() {
+      this.resultPanel = !this.resultPanel
+    },
+  },
+}
 </script>
 
 <template>
@@ -11,19 +25,30 @@ import ResultPanel from "../components/resultPanel/ResultPanel.vue"
     </header>
 
     <main class="home__content">
-      <!-- <InputPanel /> -->
-      <ResultPanel />
+      <InputPanel v-if="!resultPanel" />
+      <ResultPanel v-else />
     </main>
 
     <footer class="home__footer">
-      <button type="button" class="home__button">
-        <Icon
-          class="home__icon"
-          icon="emojione-monotone:up-arrow"
+      <button
+        @click="handleChangePanel"
+        type="button"
+        class="home__button"
+      >
+        <svg
+          :class="[
+            'home__icon',
+            resultPanel ? 'home__icon--opposite' : '',
+          ]"
+          xmlns="http://www.w3.org/2000/svg"
           width="40"
           height="40"
-          :rotate="1"
-        />
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.218 19l-1.782-1.75 5.25-5.25-5.25-5.25 1.782-1.75 6.968 7-6.968 7z"
+          />
+        </svg>
       </button>
     </footer>
   </div>
@@ -74,9 +99,20 @@ import ResultPanel from "../components/resultPanel/ResultPanel.vue"
   }
 
   &__icon {
-    color: var(--color-medium-aquamarine);
+    fill: var(--color-medium-aquamarine);
     background-color: var(--color-violet);
     border-radius: 50%;
+    padding: 1px;
+    transition: 0.3s;
+    transition-timing-function: linear;
+  }
+
+  &__icon--opposite {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
   }
 }
 </style>
