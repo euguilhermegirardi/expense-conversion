@@ -1,11 +1,26 @@
-<script setup></script>
+<script>
+export default {
+  name: "CurrencyToggle",
+  props: {
+    modelValue: String,
+  },
+  emits: ["update:modelValue"],
+  methods: {
+    handleChangeCurrency(currency) {
+      this.$emit("update:modelValue", currency)
+    },
+  },
+}
+</script>
 
 <template>
   <label class="currency-toggle">
     <input
-      class="currency-toggle__input"
       id="currency-toggle"
+      class="currency-toggle__input"
       type="checkbox"
+      :value="modelValue"
+      @input="handleChangeCurrency($event.target.value)"
     />
     <span class="currency-toggle__slider"></span>
   </label>

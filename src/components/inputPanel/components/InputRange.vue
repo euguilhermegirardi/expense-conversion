@@ -1,10 +1,38 @@
-<script setup></script>
+<script>
+export default {
+  name: "InputRange",
+  props: {
+    modelValue: Number,
+    min: {
+      type: Number,
+      default: 2,
+    },
+    max: {
+      type: Number,
+      default: 16,
+    },
+  },
+  emits: ["update:modelValue"],
+  methods: {
+    handleChangeValue(value) {
+      this.$emit("update:modelValue", value)
+    },
+  },
+}
+</script>
 
 <template>
   <div class="range">
-    <span>10</span>
-    <input class="range__input" type="range" />
-    <span>20</span>
+    <span>{{ min }}</span>
+    <input
+      class="range__input"
+      type="range"
+      :value="modelValue"
+      :min="min"
+      :max="max"
+      @input="handleChangeValue($event.target.value)"
+    />
+    <span>{{ max }}</span>
   </div>
 </template>
 

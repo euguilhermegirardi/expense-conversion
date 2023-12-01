@@ -1,13 +1,68 @@
-<script setup>
+<script>
+import { store } from "../../store"
 import CurrencyToggle from "./components/CurrencyToggle.vue"
+import CurrencyOutput from "./components/CurrencyOutput.vue"
 import InputRange from "./components/InputRange.vue"
+
+export default {
+  components: {
+    CurrencyToggle,
+    CurrencyOutput,
+    InputRange,
+  },
+  name: "InputPanel",
+  methods: {},
+  computed: {
+    currency: {
+      get() {
+        return store.getters["moduleTip/getCurrency"]
+      },
+      set(currency) {
+        store.dispatch(
+          "moduleTip/handleChangeCurrency",
+          currency
+        )
+      },
+    },
+    bill: {
+      get() {
+        return store.getters["moduleTip/getBill"]
+      },
+      set(bill) {
+        const pattern =
+          /(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/
+        if (pattern.test(bill))
+          store.commit("moduleTip/setBill", bill)
+      },
+    },
+    tip: {
+      get() {
+        return store.getters["moduleTip/getTip"]
+      },
+      set(tip) {
+        store.commit("moduleTip/setTip", tip)
+      },
+    },
+    billDividedBy: {
+      get() {
+        return store.getters["moduleTip/getBillDividedBy"]
+      },
+      set(perPerson) {
+        store.commit(
+          "moduleTip/setBillDividedBy",
+          perPerson
+        )
+      },
+    },
+  },
+}
 </script>
 
 <template>
   <form class="input-panel">
     <div class="input-panel__container">
       <span>EUR</span>
-      <CurrencyToggle />
+      <CurrencyToggle v-model="currency" />
       <span>USD</span>
     </div>
 
@@ -16,12 +71,13 @@ import InputRange from "./components/InputRange.vue"
     >
       <label class="input-panel__value-label">Valor</label>
       <div class="input-panel__value-container">
-        <p class="input-panel__currency">€</p>
+        <CurrencyOutput :currency="currency" />
         <input
-          id="inputNumber"
+          id="inputBill"
           class="input-panel__value-input"
           type="number"
           placeholder="Ex: 210.25"
+          v-model="bill"
         />
       </div>
     </div>
@@ -30,28 +86,45 @@ import InputRange from "./components/InputRange.vue"
       class="input-panel__container input-panel__container--column"
     >
       <div class="input-panel__range-label-container">
-        <label class="input-panel__range-label"
+        <label
+          for="tipInputRange"
+          class="input-panel__range-label"
           >Gorjeta:
-          <span class="input-panel__range-tip"> 13% </span>
+          <span class="input-panel__range-tip">
+            {{ tip }}%
+          </span>
         </label>
       </div>
 
-      <InputRange />
+      <InputRange
+        id="tipInputRange"
+        v-model="tip"
+        :min="10"
+        :max="20"
+      />
     </div>
 
     <div
       class="input-panel__container input-panel__container--column"
     >
       <div class="input-panel__range-label-container">
-        <label class="input-panel__range-label"
-          >Pessoas:
-          <span class="input-panel__range-tip"
-            >13%</span
-          ></label
+        <label
+          for="dividedByPersonInputRange"
+          class="input-panel__range-label"
         >
+          Pessoas:
+          <span class="input-panel__range-tip">
+            {{ billDividedBy }}
+          </span>
+        </label>
       </div>
 
-      <InputRange />
+      <InputRange
+        id="dividedByPersonInputRange"
+        v-model="billDividedBy"
+        :min="2"
+        :max="16"
+      />
     </div>
   </form>
 </template>
@@ -95,13 +168,6 @@ import InputRange from "./components/InputRange.vue"
     justify-content: flex-start;
     gap: 5px;
     height: 100%;
-  }
-
-  &__currency {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    font-size: 22px;
   }
 
   &__value-input {
