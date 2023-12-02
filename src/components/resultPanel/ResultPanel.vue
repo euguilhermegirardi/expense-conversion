@@ -25,9 +25,6 @@ export default {
     },
   },
   watch: {
-    conversionFlag(state) {
-      console.log(state)
-    },
     total(tip) {
       if (tip.total != 0) this.convertToReal()
     },
