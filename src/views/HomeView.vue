@@ -7,13 +7,24 @@ export default {
   name: "HomeView",
   data() {
     return {
-      resultPanel: false,
+      togglePanel: true,
+      isMobile: false,
     }
   },
   methods: {
-    handleChangePanel() {
-      this.resultPanel = !this.resultPanel
+    togglePanels() {
+      this.togglePanel = !this.togglePanel
     },
+    updateLayout() {
+      this.isMobile = window.innerWidth <= 768
+    },
+  },
+  mounted() {
+    this.updateLayout()
+    window.addEventListener("resize", this.updateLayout)
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.updateLayout)
   },
 }
 </script>
@@ -25,20 +36,33 @@ export default {
     </header>
 
     <main class="home__content">
-      <InputPanel v-if="!resultPanel" />
-      <ResultPanel v-else />
+      <div
+        class="home__panel-container"
+        id="panel1"
+        v-show="togglePanel || !isMobile"
+      >
+        <InputPanel />
+      </div>
+      <div
+        class="home__panel-container"
+        id="panel2"
+        v-show="!togglePanel || !isMobile"
+      >
+        <ResultPanel />
+      </div>
     </main>
 
     <footer class="home__footer">
       <button
-        @click="handleChangePanel"
-        type="button"
         class="home__button"
+        type="button"
+        v-show="isMobile"
+        @click="togglePanels"
       >
         <svg
           :class="[
             'home__icon',
-            resultPanel ? 'home__icon--opposite' : '',
+            togglePanel ? 'home__icon--opposite' : '',
           ]"
           xmlns="http://www.w3.org/2000/svg"
           width="40"
@@ -61,7 +85,11 @@ export default {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 0 3rem;
+  padding: 0 2rem;
+
+  @media (min-width: 768px) {
+    padding: 0 15rem;
+  }
 
   &__header {
     flex: 2;
@@ -81,6 +109,12 @@ export default {
     display: flex;
     justify-content: center;
     width: 100%;
+  }
+
+  &__panel-container {
+    @media (min-width: 768px) {
+      flex: 1;
+    }
   }
 
   &__footer {
@@ -113,6 +147,21 @@ export default {
     -ms-transform: rotate(180deg);
     -o-transform: rotate(180deg);
     transform: rotate(180deg);
+  }
+
+  @media (max-width: 768px) {
+    .home__content {
+      flex-direction: column;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .home__content {
+      flex-direction: row;
+    }
+    .home__button {
+      display: none;
+    }
   }
 }
 </style>
