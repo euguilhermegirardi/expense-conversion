@@ -21,7 +21,7 @@ export default {
 
       setTimeout(() => {
         store.dispatch("moduleTip/handleConvertCurrency")
-      }, 4500)
+      }, 2500)
     },
   },
   watch: {
