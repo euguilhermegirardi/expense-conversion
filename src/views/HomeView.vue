@@ -62,7 +62,7 @@ export default {
         <svg
           :class="[
             'home__icon',
-            togglePanel ? 'home__icon--opposite' : '',
+            togglePanel ? '' : 'home__icon--opposite',
           ]"
           xmlns="http://www.w3.org/2000/svg"
           width="40"
