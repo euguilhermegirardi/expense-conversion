@@ -14,15 +14,15 @@ export default {
 </script>
 
 <template>
-  <label class="currency-toggle">
+  <label class="currency-toggle" for="currency-toggle">
     <input
       id="currency-toggle"
       class="currency-toggle__input"
       type="checkbox"
       :value="modelValue"
-      @input="handleChangeCurrency($event.target.value)"
+      @change="handleChangeCurrency($event.target.value)"
     />
-    <span class="currency-toggle__slider"></span>
+    <span class="currency-toggle__slider" />
   </label>
 </template>
 

@@ -1,7 +1,7 @@
 <script>
 import { store } from "../../store"
 import CurrencyToggle from "./components/CurrencyToggle.vue"
-import CurrencyOutput from "./components/CurrencyOutput.vue"
+import CurrencyOutput from "../CurrencyOutput.vue"
 import InputRange from "./components/InputRange.vue"
 
 export default {
@@ -11,7 +11,11 @@ export default {
     InputRange,
   },
   name: "InputPanel",
-  methods: {},
+  methods: {
+    handleSubmitForm(event) {
+      event.preventDefault()
+    },
+  },
   computed: {
     currency: {
       get() {
@@ -59,7 +63,10 @@ export default {
 </script>
 
 <template>
-  <form class="input-panel">
+  <form
+    class="input-panel"
+    @submit.prevent="handleSubmitForm"
+  >
     <div class="input-panel__container">
       <span>EUR</span>
       <CurrencyToggle v-model="currency" />
@@ -69,7 +76,11 @@ export default {
     <div
       class="input-panel__container input-panel__container--value"
     >
-      <label class="input-panel__value-label">Valor</label>
+      <label
+        class="input-panel__value-label"
+        for="inputBill"
+        >Valor</label
+      >
       <div class="input-panel__value-container">
         <CurrencyOutput :currency="currency" />
         <input

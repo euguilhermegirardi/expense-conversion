@@ -30,7 +30,7 @@ export default {
       :value="modelValue"
       :min="min"
       :max="max"
-      @input="handleChangeValue($event.target.value)"
+      @change="handleChangeValue($event.target.value)"
     />
     <span>{{ max }}</span>
   </div>
