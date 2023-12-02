@@ -19,9 +19,9 @@ export default {
     convertToReal() {
       store.commit("moduleTip/setConversionFlag", "loading")
 
-      // setTimeout(() => {
-      //   store.dispatch("moduleTip/handleConvertCurrency")
-      // }, 4500)
+      setTimeout(() => {
+        store.dispatch("moduleTip/handleConvertCurrency")
+      }, 4500)
     },
   },
   watch: {
