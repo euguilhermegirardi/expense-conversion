@@ -81,7 +81,10 @@ export default {
         <div class="result-panel__loading-spinner"></div>
       </div>
 
-      <p v-show="conversionFlag === 'error'">
+      <p
+        class="result-panel__error-msg"
+        v-show="conversionFlag === 'error'"
+      >
         Something went wrong. Please refresh the page and
         try again.
       </p>
@@ -137,6 +140,14 @@ export default {
     width: 22px;
     height: 22px;
     animation: spin 1s linear infinite;
+  }
+
+  &__error-msg {
+    font-size: 1.2rem;
+    background-color: var(--color-background-error-msg);
+    color: var(--color-error-msg);
+    border-radius: 5px;
+    padding: 5px;
   }
 
   @keyframes spin {
