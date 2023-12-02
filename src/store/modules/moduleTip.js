@@ -10,7 +10,7 @@ export const moduleTip = {
       tip: 10,
       billDividedBy: 2,
       totalInReal: 0,
-      conversionFlag: "idle",
+      conversionFlag: "done",
     }
   },
   mutations: {
@@ -42,8 +42,6 @@ export const moduleTip = {
       }
     },
     handleConvertCurrency(context) {
-      context.commit("setConversionFlag", "loading")
-
       const calculatedTip =
         context.getters["getCalculatedTip"]
 

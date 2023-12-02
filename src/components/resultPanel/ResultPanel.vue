@@ -5,11 +5,6 @@ import CurrencyOutput from "../CurrencyOutput.vue"
 
 export default {
   name: "ResultPanel",
-  data() {
-    return {
-      timer: null,
-    }
-  },
   components: { CurrencyOutput },
   computed: {
     ...mapGetters({
@@ -21,21 +16,23 @@ export default {
     }),
   },
   methods: {
-    convert() {
-      clearTimeout(this.timer)
-      this.timer = setTimeout(() => {
-        store.dispatch("moduleTip/handleConvertCurrency")
-      }, 1000)
+    convertToReal() {
+      store.commit("moduleTip/setConversionFlag", "loading")
+
+      // setTimeout(() => {
+      //   store.dispatch("moduleTip/handleConvertCurrency")
+      // }, 4500)
     },
   },
   watch: {
+    conversionFlag(state) {
+      console.log(state)
+    },
     total(tip) {
-      console.log("entrou no watch - total")
-      if (tip.total != 0) this.convert()
+      if (tip.total != 0) this.convertToReal()
     },
     currency() {
-      console.log("entrou no watch - currency")
-      if (this.total.total != 0) this.convert()
+      if (this.total.total != 0) this.convertToReal()
     },
   },
 }
@@ -77,7 +74,22 @@ export default {
 
     <div class="result-panel__container">
       <label class="result-panel__label">em R$</label>
-      <p class="result-panel__value">
+      <div
+        class="result-panel__loading-container"
+        v-show="conversionFlag === 'loading'"
+      >
+        <div class="result-panel__loading-spinner"></div>
+      </div>
+
+      <p v-show="conversionFlag === 'error'">
+        Something went wrong. Please refresh the page and
+        try again.
+      </p>
+
+      <p
+        class="result-panel__value"
+        v-show="conversionFlag === 'done'"
+      >
         <CurrencyOutput currency="BRL" />
         {{ totalInReal }}
       </p>
@@ -110,7 +122,30 @@ export default {
     justify-content: center;
     font-weight: 600;
     font-size: 28px;
-    color: #940dff;
+    color: var(--color-violet);
+  }
+  &__loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__loading-spinner {
+    border: 4px solid var(--color-hot-pink);
+    border-radius: 50%;
+    border-top: 4px solid var(--color-violet);
+    width: 22px;
+    height: 22px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 }
 </style>
