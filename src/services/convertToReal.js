@@ -1,5 +1,3 @@
-import axios from "axios"
-
 const apiKey = "aeac0a7c61a8d15d26265e39"
 
 export async function convertToReal(
@@ -10,15 +8,20 @@ export async function convertToReal(
   const apiUrl = `https://open.er-api.com/v6/latest?api_key=${apiKey}&base=${fromCurrency}&symbols=${toCurrency}`
 
   try {
-    const response = await axios.get(apiUrl)
+    const response = await fetch(apiUrl)
 
-    if (response.status === 200) {
-      const rate = response.data.rates[toCurrency]
-      const convertedAmount = (amount * rate).toFixed(2)
-      return convertedAmount
-    } else {
-      throw new Error(response.data.error.info)
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error! Status: ${response.status}`
+      )
     }
+
+    const responseData = await response.json()
+
+    const rate = responseData.rates[toCurrency]
+    const convertedAmount = (amount * rate).toFixed(2)
+
+    return convertedAmount
   } catch (error) {
     throw new Error(error.message)
   }
