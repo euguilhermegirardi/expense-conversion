@@ -1,6 +1,4 @@
-# Convenia - Le/Tip
-
-Teste feito em Vue e Vuex para a empresa Convenia.
+# Expense Conversion
 
 ![mobile1](.github/mobile-1.png)
 
